@@ -39,7 +39,7 @@
 				  }
 				 }
 				 
-				function addgenre() { // adding genresssss
+				function addgenre() { // adding genressssss
 				$this->load->database();
 						$username = $_POST['Username'];
 						$user_token = $_POST['user_token'];
