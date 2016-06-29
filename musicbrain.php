@@ -39,8 +39,21 @@
 				  }
 				 }
 				 
-				//function addgenre() {
-				//}
+				function addgenre() {
+				$this->load->database();
+						$username = $_POST['Username'];
+						$user_token = $_POST['user_token'];
+						$genre = $_POST['genre'];
+		
+				 $this->load->database();
+				  $sql= 'Update Users set user_token ="'.$master.'" where username ="'.$username.'";';
+				  $query = $this->db->query($sql);
+				  $info->status='success';
+				  $info->user = $query;
+				  $data->user_token = $master;
+				  $this->response($data, 200);
+				 }
+				}
 				// 
 				//}
 		// Artist Functions
