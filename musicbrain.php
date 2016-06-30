@@ -39,21 +39,44 @@
 				  }
 				 }
 				 
+				 
+				 
+				 
 				function addgenre() { // adding genressssss
-				$this->load->database();
-						$username = $_POST['Username'];
-						$user_token = $_POST['user_token'];
-						$genre = $_POST['genre'];
+				$headers = apache_request_headers();
+				$headers = base64_decode($headers['authorization']);
+				$information = explode(':',$headers);
+				$username = $information[0];
+				$password = $information[1];
+				$user_token = $information[2];
+				$sql = 'SELECT COUNT(username) AS records FROM user WHERE username = "'.$username.'" AND user_token = "'.$user_token.'" AND password = "'.md5($password).'";';
+				$query = $this->db->query($sql);
+				$data = $query->row();
+						if ($data->records == "0") {
+								$info->status = 'failure';
+								$info->error->code = 48;
+								$info->error->text = 'Invalid credentials supplied';
+								$this->response($info, 401);
+						}
+						
+						//if no auth has been given
+						if (empty($headers['authorization'])) {
+								$info->status = 'failure';
+								$info->error->code = 47;
+								$info->error->text = 'No credentials supplied';
+								$this->response($info, 401);	
+						}
+				                 $name = $_POST['name'];
+						$description = $_POST['description'];
+						//these fields above input in body
+						$info = array('genre_id'=>null, 'name'=>$name, 'description'=>$description);
+						$this->db->insert('genre',$info);
+						$data->name = $name;
+						$data->description = $description;
 		
-				 $this->load->database();
-				  $sql= 'Update Users set user_token ="'.$master.'" where username ="'.$username.'";';
-				  $query = $this->db->query($sql);
-				  $info->status='success';
-				  $info->user = $query;
-				  $data->user_token = $master;
-				  $this->response($data, 200);
-				 }
+						$this->response($data,200);	
 				}
+		}
 				// 
 				//}
 		// Artist Functions
@@ -93,8 +116,43 @@
 				 }
 				 
 				 
-				// function addartist () {
-				//}
+				function addartist () {
+						
+					$headers = apache_request_headers();
+				$headers = base64_decode($headers['authorization']);
+				$information = explode(':',$headers);
+				$username = $information[0];
+				$password = $information[1];
+				$user_token = $information[2];
+				$sql = 'SELECT COUNT(username) AS records FROM user WHERE username = "'.$username.'" AND user_token = "'.$user_token.'" AND password = "'.md5($password).'";';
+				$query = $this->db->query($sql);
+				$data = $query->row();
+						if ($data->records == "0") {
+								$info->status = 'failure';
+								$info->error->code = 48;
+								$info->error->text = 'Invalid credentials supplied';
+								$this->response($info, 401);
+						}
+						
+						//if no auth has been given
+						if (empty($headers['authorization'])) {
+								$info->status = 'failure';
+								$info->error->code = 47;
+								$info->error->text = 'No credentials supplied';
+								$this->response($info, 401);	
+						}
+				                 $name = $_POST['name'];
+						$description = $_POST['description'];
+						//these fields above input in body
+						$info = array('artist_id'=>null, 'name'=>$name, 'description'=>$description);
+						$this->db->insert('Artist',$info);
+						$data->name = $name;
+						$data->description = $description;
+		
+						$this->response($data,200);	
+					
+						
+				}
 				 
 		// Album functions		 
 				
